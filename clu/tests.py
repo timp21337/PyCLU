@@ -55,8 +55,8 @@ class RDDTestRunner(TextTestRunner):
                 else:
                     reqParaCount[req] = 1
 
-        print ""
-        print "h1. Requirements Verification Matrix"
+        print("")
+        print("h1. Requirements Verification Matrix")
         #|/5.[[Requirements#Session-SES|Session (SES)]]
         #|1|@Minimiser.TestUserAndSession.test_loginSuccess, Minimiser.TestUserAndSession.test_loginFailure@ |
         lastReq = ''
@@ -65,13 +65,13 @@ class RDDTestRunner(TextTestRunner):
             if req != lastReq :
                 lastReq = req
                 (rname, _, rcode) = req.rpartition("-")
-                print ""
-                print "|_.Section|_.Number|_.Verified By Test|"
+                print("")
+                print("|_.Section|_.Number|_.Verified By Test|")
                 href = "|/%d.[[Requirements#%s|%s (%s)]]" % (reqParaCount[req],req, rname, rcode)
             else:
                 href = ''
-            print "%s|%s|@%s@|" % (href, paraNo, ",\n".join(paraTests[p]))
-        print ""
+            print("%s|%s|@%s@|" % (href, paraNo, ",\n".join(paraTests[p])))
+        print("")
         return result
 
 
