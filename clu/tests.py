@@ -1,4 +1,6 @@
 import unittest
+import xmlrunner
+
 from functools import wraps  # use this to preserve function signatures and docstrings
 from collections import OrderedDict
 from unittest.runner import TextTestRunner
@@ -129,6 +131,10 @@ class TestRequirements(unittest.TestCase):
         add_unit(LengthUnit('ft', 'feet', 0.3048))
         self.assertEqual(Length(12, 'in'), Length.fromString('1 ft'))
         self.assertEqual(Length(14, 'in'), Length.fromString('1 ft 2 in'))
+
+if __name__ == '__main__':
+    unittest.main(testRunner=xmlrunner.XMLTestRunner(output='test-reports'))
+
 
 if __name__ == '__main__':
     unittest.main()
