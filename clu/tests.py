@@ -1,4 +1,5 @@
 import unittest
+import os
 
 from functools import wraps  # use this to preserve function signatures and docstrings
 from collections import OrderedDict
@@ -52,7 +53,11 @@ class RDDTestRunner(TextTestRunner):
                     paraTests[para].append(test)
                 else:
                     paraTests[para] = [test]
-        out = open('requirements_verification_matrix.html', 'w')
+        directory = 'Requirements_Verification_Matrix'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+
+        out = open('%s/index.html' % directory, 'w')
         out.write("<html>")
         out.write("<body>")
         out.write("<h1>Requirements Verification Matrix</h1>")
