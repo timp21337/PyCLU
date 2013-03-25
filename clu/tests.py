@@ -88,7 +88,7 @@ class TestRequirements(unittest.TestCase):
             if Length(1, 'in') == get_unit('in'):
                 print("Fooled pylint")
             self.fail("Should have bombed")
-        except TypeError, e:
+        except TypeError:
             pass
 
 
