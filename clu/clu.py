@@ -58,21 +58,23 @@ class Length(object):
 
     @classmethod
     def from_string(cls, string):
+        """mint a Length usig for example '9 in'."""
         string = string.strip()
         (real_s, _, tail) = string.partition(' ')
-        (unitSymbol, _, tail) = tail.partition(' ')
+        (unit_symbol, _, tail) = tail.partition(' ')
         real = float(real_s)
-        unit = _LENGTH_UNITS[unitSymbol]
+        unit = _LENGTH_UNITS[unit_symbol]
         while tail != '':
             soFar = Length(real, unit.symbol)
             (real_s, _, tail) = tail.partition(' ')
-            (unitSymbol, _, tail) = tail.partition(' ')
-            nextLength = Length(float(real_s), unitSymbol)
-            added = soFar + nextLength
+            (unit_symbol, _, tail) = tail.partition(' ')
+            next_length = Length(float(real_s), unit_symbol)
+            added = soFar + next_length
             real = added.real
             unit = added.unit
         return Length(real, unit.symbol)
 
     def to(self, unit_symbol):
+        """Convert to given unit."""
         return Length(((self.real * self.unit.metres)
                        / _LENGTH_UNITS[unit_symbol].metres), unit_symbol)
