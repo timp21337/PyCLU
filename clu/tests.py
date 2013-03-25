@@ -1,5 +1,4 @@
 import unittest
-import xmlrunner
 
 from functools import wraps  # use this to preserve function signatures and docstrings
 from collections import OrderedDict
@@ -14,7 +13,8 @@ requirements = {
     '05': 'All length units must be convertible to each other',
     '06': 'Rounding errors must not fail comparisons',
     '07': 'There must be a mechanism to add new units',
-    '08': 'An object must be creatable from a string representation'
+    '08': 'An object must be creatable from a string representation',
+    '09': 'Anticipated exceptions must be tested',
 }
 
 
@@ -36,11 +36,13 @@ class RDDTestRunner(TextTestRunner):
     """
     A test runner to aggregate requirements paragraphs.
     """
+    def run(self, test):
+        result = TextTestRunner.run(self, test)
+        if isinstance(test, unittest.suite.TestSuite):
+            self.print_matrix()
+        return result
 
-    def suite_result(self, suite, result, **kwargs):
-
-        result = super(RDDTestRunner, self).suite_result(suite, result, **kwargs)
-
+    def print_matrix(self):
         paraTests = OrderedDict()
         reqParaCount = {}
         for test in testParas.keys():
@@ -49,30 +51,15 @@ class RDDTestRunner(TextTestRunner):
                     paraTests[para].append(test)
                 else:
                     paraTests[para] = [test]
-                (req,_, paraNo) = para.partition('.')
-                if req in reqParaCount:
-                    reqParaCount[req] += 1
-                else:
-                    reqParaCount[req] = 1
-
         print("")
-        print("h1. Requirements Verification Matrix")
-        #|/5.[[Requirements#Session-SES|Session (SES)]]
-        #|1|@Minimiser.TestUserAndSession.test_loginSuccess, Minimiser.TestUserAndSession.test_loginFailure@ |
-        lastReq = ''
+        print("<h1>Requirements Verification Matrix</h1>")
         for p in sorted(paraTests.keys()):
-            (req,_, paraNo) = p.partition('.')
-            if req != lastReq :
-                lastReq = req
-                (rname, _, rcode) = req.rpartition("-")
-                print("")
-                print("|_.Section|_.Number|_.Verified By Test|")
-                href = "|/%d.[[Requirements#%s|%s (%s)]]" % (reqParaCount[req],req, rname, rcode)
-            else:
-                href = ''
-            print("%s|%s|@%s@|" % (href, paraNo, ",\n".join(paraTests[p])))
+            print("<h2>%s - %s</h2>" % (p, requirements[p]))
+            print "<ul>"
+            for t in paraTests[p]:
+                print("<li>%s</li>" % t)
+            print "</ul>"
         print("")
-        return result
 
 
 class TestRequirements(unittest.TestCase):
@@ -133,4 +120,4 @@ class TestRequirements(unittest.TestCase):
         self.assertEqual(Length(14, 'in'), Length.fromString('1 ft 2 in'))
 
 if __name__ == '__main__':
-    unittest.main(testRunner=xmlrunner.XMLTestRunner(output='test-reports'))
+    unittest.main(testRunner=RDDTestRunner)
