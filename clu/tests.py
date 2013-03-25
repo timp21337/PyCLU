@@ -1,12 +1,14 @@
+"""Tests for clu"""
+
 import unittest
 
-import rdd
-from rdd import requirement_refs
-from rdd import add_requirement
+import clu.rdd
+from clu.rdd import requirement_refs
+from clu.rdd import add_requirement
 
-from clu import Length
-from clu import LengthUnit
-from clu import add_unit
+from clu.clu import Length
+from clu.clu import LengthUnit
+from clu.clu import add_unit
 
 add_requirement('01', 'Conversions must be reflexive.')
 add_requirement('02', 'Conversions must be symetric.')
@@ -19,12 +21,8 @@ add_requirement('08', 'An object must be creatable from a string representation.
 add_requirement('09', 'Anticipated exceptions must be tested.')
 
 
-
-
 class TestRequirements(unittest.TestCase):
-
-    def setUp(self):
-        pass
+    """All tests - annotated with requirement id."""
 
     @requirement_refs(['06'])
     def test_example(self):
@@ -75,10 +73,10 @@ class TestRequirements(unittest.TestCase):
         self.assertEqual(Length(12, 'in'), Length(1, 'ft'))
 
     @requirement_refs(['04', '08'])
-    def test_fromString(self):
+    def test_from_string(self):
         add_unit(LengthUnit('ft', 'feet', 0.3048))
         self.assertEqual(Length(12, 'in'), Length.from_string('1 ft'))
         self.assertEqual(Length(14, 'in'), Length.from_string('1 ft 2 in'))
 
 if __name__ == '__main__':
-    unittest.main(testRunner=rdd.RDDTestRunner)
+    unittest.main(testRunner=clu.rdd.RDDTestRunner)
