@@ -27,6 +27,10 @@ def add_unit(unit):
     _LENGTH_UNITS[unit.symbol] = unit
 
 
+def get_unit(unit_symbol):
+    return _LENGTH_UNITS[unit_symbol]
+
+
 class Length(object):
     """A tuple of a real and a unit to represent a length."""
 

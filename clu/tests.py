@@ -8,6 +8,7 @@ from .rdd import add_requirement
 
 from .clu import Length
 from .clu import LengthUnit
+from .clu import get_unit
 from .clu import add_unit
 
 add_requirement('01', 'Conversions must be reflexive.')
@@ -81,6 +82,14 @@ class TestRequirements(unittest.TestCase):
         add_unit(LengthUnit('ft', 'feet', 0.3048))
         self.assertEqual(Length(12, 'in'), Length.from_string('1 ft'))
         self.assertEqual(Length(14, 'in'), Length.from_string('1 ft 2 in'))
+
+    def test_compare_with_differing_type(self):
+        try:
+            Length('1 in') == get_unit('in')
+            self.fail("Should have bombed")
+        except TypeError:
+            pass
+
 
 if __name__ == '__main__':
     unittest.main(testRunner=RDDTestRunner)
