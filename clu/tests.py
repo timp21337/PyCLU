@@ -83,6 +83,9 @@ class TestRequirements(unittest.TestCase):
         self.assertEqual(Length(12, 'in'), Length.from_string('1 ft'))
         self.assertEqual(Length(14, 'in'), Length.from_string('1 ft 2 in'))
 
+        self.assertEqual(Length(0.0833333333333, 'ft'), Length.from_string('1 in'),
+                         Length.from_string('1 in').to('ft').real)
+
     def test_compare_with_differing_type(self):
         try:
             if Length(1, 'in') == get_unit('in'):
