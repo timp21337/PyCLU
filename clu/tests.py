@@ -20,6 +20,7 @@ add_requirement('06', 'Rounding errors must not fail comparisons.')
 add_requirement('07', 'There must be a mechanism to add new units.')
 add_requirement('08', 'An object must be creatable from a string representation.')
 add_requirement('09', 'Anticipated exceptions must be tested.')
+add_requirement('10', 'Lengths must have an additional unabbreviated textual description.')
 
 
 class TestRequirements(unittest.TestCase):
@@ -94,6 +95,11 @@ class TestRequirements(unittest.TestCase):
             self.fail("Should have bombed")
         except TypeError:
             pass
+
+    def test_pretty_print(self):
+        add_unit(LengthUnit('ft', 'feet', 0.3048))
+        self.assertEqual('0.083 feet', Length.from_string('1 in').to('ft').pprint())
+        self.assertEqual('3 yards', Length(3, 'yd').pprint())
 
 
 if __name__ == '__main__':

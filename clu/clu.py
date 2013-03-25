@@ -83,3 +83,12 @@ class Length(object):
         """Convert to given unit."""
         return Length(((self.real * self.unit.metres)
                        / _LENGTH_UNITS[unit_symbol].metres), unit_symbol)
+
+    def pprint(self):
+        string = "{:.3F}".format(self.real)
+        string = string.strip('0')
+        if string.startswith('.'):
+            string = '0' + string
+        if string.endswith('.'):
+            string = string.strip('.')
+        return "%s %s" % (string, self.unit.name)
