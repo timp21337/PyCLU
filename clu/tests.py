@@ -1,4 +1,11 @@
-"""Tests for clu"""
+"""
+ Tests for clu.
+
+ python -m clu.tests
+
+ will generate requirements matrix as well as run tests.
+
+"""
 
 import unittest
 
