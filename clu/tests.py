@@ -54,7 +54,9 @@ class TestRequirements(unittest.TestCase):
 
     @requirement_refs(['04'])
     def test_concatenable(self):
-        pass
+        add_unit(LengthUnit('ft', 'feet', 0.3048))
+        self.assertEqual(Length(170, 'in'), Length.from_string('4 yd 2 ft 2 in'), Length.from_string('4 yd 2 ft 2 in'))
+        self.assertRaises(StandardError, Length.from_string, '2 in 4 ft')
 
     @requirement_refs(['05'])
     def test_convert_between_all_units(self):
