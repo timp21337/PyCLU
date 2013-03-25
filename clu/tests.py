@@ -1,10 +1,12 @@
 import unittest
 
 import rdd
-from rdd import requirementRefs
+from rdd import requirement_refs
 from rdd import add_requirement
 
-from clu import *
+from clu import Length
+from clu import LengthUnit
+from clu import add_unit
 
 add_requirement('01', 'Conversions must be reflexive.')
 add_requirement('02', 'Conversions must be symetric.')
@@ -24,16 +26,16 @@ class TestRequirements(unittest.TestCase):
     def setUp(self):
         pass
 
-    @requirementRefs(['06'])
+    @requirement_refs(['06'])
     def test_example(self):
         self.assertEqual(str(Length(6, 'm').to('yd')), '6.562 yd')
         self.assertEqual(str(Length(2.5, 'yd').to('in')), '90 in')
 
-    @requirementRefs(['01'])
+    @requirement_refs(['01'])
     def test_reflexive(self):
         self.assertEqual(Length(1.1, 'in'), Length(1.1, 'in'))
 
-    @requirementRefs(['02'])
+    @requirement_refs(['02'])
     def test_symetric(self):
         self.assertEqual(Length(1.1, 'yd').to('m'),
                          Length(1.00584, 'm'))
@@ -44,16 +46,17 @@ class TestRequirements(unittest.TestCase):
                          Length(1.1, 'yd').to('m').to('yd'))
 
 
-    @requirementRefs(['03'])
+    @requirement_refs(['03'])
     def test_transitive(self):
         """If x = y and y = z then x = z"""
-        pass
+        self.assertEqual(Length(1.1, 'yd').to('m').to('in'),
+                         Length(39.6, 'in'))
 
-    @requirementRefs(['04'])
+    @requirement_refs(['04'])
     def test_concatenable(self):
         pass
 
-    @requirementRefs(['05'])
+    @requirement_refs(['05'])
     def test_convert_between_all_units(self):
         self.assertEquals(str(Length(1.1, 'yd').to('in')), "39.6 in")
         self.assertEquals(str(Length(1.1, 'yd').to('m')), "1.006 m")
@@ -62,16 +65,16 @@ class TestRequirements(unittest.TestCase):
         self.assertEquals(str(Length(110, 'in').to('yd')), "3.056 yd")
         self.assertEquals(str(Length(110, 'in').to('m')), "2.794 m")
 
-    @requirementRefs(['06'])
+    @requirement_refs(['06'])
     def test_rounding(self):
         self.assertEqual(Length(36, 'in'), Length(1, 'yd'))
 
-    @requirementRefs(['07'])
+    @requirement_refs(['07'])
     def test_add_feet(self):
         add_unit(LengthUnit('ft', 'feet', 0.3048))
         self.assertEqual(Length(12, 'in'), Length(1, 'ft'))
 
-    @requirementRefs(['04', '08'])
+    @requirement_refs(['04', '08'])
     def test_fromString(self):
         add_unit(LengthUnit('ft', 'feet', 0.3048))
         self.assertEqual(Length(12, 'in'), Length.from_string('1 ft'))

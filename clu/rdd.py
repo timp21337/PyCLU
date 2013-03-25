@@ -16,7 +16,7 @@ def add_requirement(ref, desc):
     _REQUIREMENTS[ref] = desc
 
 
-def requirementRefs(refs):
+def requirement_refs(refs):
     """
     See
     http://stackoverflow.com/questions/306130/python-decorator-makes-function-forget-that-it-belongs-to-a-class
@@ -44,6 +44,7 @@ class RDDTestRunner(TextTestRunner):
         return result
 
     def print_matrix(self):
+        """Print to an html output"""
         para_tests = OrderedDict()
         for test in self.test_refs.keys():
             for para in self.test_refs[test]:
