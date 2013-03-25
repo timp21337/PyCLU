@@ -1,0 +1,4 @@
+[run]
+omit =
+  clu/rdd.py
+  *__init__.py
