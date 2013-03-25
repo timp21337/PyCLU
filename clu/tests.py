@@ -88,6 +88,7 @@ class TestRequirements(unittest.TestCase):
                          Length.from_string('1 in').to('ft').real)
         self.assertEqual('0.083 ft', str(Length.from_string('1 in').to('ft')))
 
+    @requirement_refs(['09'])
     def test_compare_with_differing_type(self):
         try:
             if Length(1, 'in') == get_unit('in'):
@@ -96,6 +97,7 @@ class TestRequirements(unittest.TestCase):
         except TypeError:
             pass
 
+    @requirement_refs(['10'])
     def test_pretty_print(self):
         add_unit(LengthUnit('ft', 'feet', 0.3048))
         self.assertEqual('0.083 feet', Length.from_string('1 in').to('ft').pprint())
