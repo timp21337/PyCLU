@@ -59,7 +59,7 @@ class Length(object):
             return str(self.real * self.unit.metres) == str(other.real * other.unit.metres)
         else:
             raise TypeError(
-                "Only objects of the same type can be compared for equality %s : %s" % (self, other))
+                "Only objects of the same type can be compared for equality '%s' : '%s'" % (self, other))
 
     @classmethod
     def from_string(cls, string):
