@@ -1,5 +1,5 @@
-__author__ = 'timp'
-__doc__ = "Length conversion utility"
+__author__ = "timp"
+__doc__ = """Length conversion utility"""
 
 
 class LengthUnit(object):
@@ -22,7 +22,8 @@ lengthUnits = {
 }
 
 def add_unit(unit):
-    lengthUnits[unit.symbol]=unit
+    """Add a unit to the known units"""
+    lengthUnits[unit.symbol] = unit
 
 class Length(object):
     """A tuple of a real and a unit to represent a length."""
