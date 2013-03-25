@@ -21,9 +21,11 @@ lengthUnits = {
     'yd': LengthUnit('yd', 'yards', 0.9144)
 }
 
+
 def add_unit(unit):
     """Add a unit to the known units"""
     lengthUnits[unit.symbol] = unit
+
 
 class Length(object):
     """A tuple of a real and a unit to represent a length."""
@@ -33,28 +35,27 @@ class Length(object):
         self.unit = lengthUnits[unitSymbol]
 
     @classmethod
-    def fromString(self, string):
+    def fromString(cls, string):
         string = string.strip()
-        (real_s,_,tail) = string.partition(' ')
-        (unitSymbol,_,tail) = tail.partition(' ')
+        (real_s, _, tail) = string.partition(' ')
+        (unitSymbol, _, tail) = tail.partition(' ')
         real = float(real_s)
         unit = lengthUnits[unitSymbol]
-        while (tail != ''):
+        while tail != '':
             soFar = Length(real, unit.symbol)
-            (real_s,_,tail) = tail.partition(' ')
-            (unitSymbol,_,tail) = tail.partition(' ')
-            nextLength = Length(float(real_s),unitSymbol)
+            (real_s, _, tail) = tail.partition(' ')
+            (unitSymbol, _, tail) = tail.partition(' ')
+            nextLength = Length(float(real_s), unitSymbol)
             added = soFar + nextLength
             real = added.real
             unit = added.unit
-        return Length(real,unit.symbol)
+        return Length(real, unit.symbol)
 
     def __add__(self, other):
         if  other.unit < self.unit:
             return Length((self.to(other.unit.symbol).real + other.real), other.unit.symbol)
         else:
             raise StandardError("Subsequent units must be smaller")
-
 
     def __str__(self):
         string = "{:.3F}".format(self.real)
