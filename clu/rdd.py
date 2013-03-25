@@ -5,7 +5,7 @@ import unittest
 import os
 from time import gmtime, strftime
 
-from functools import wraps  # use this to preserve function signatures and docstrings
+from functools import wraps  # preserve function signatures and docstrings
 from collections import OrderedDict
 from unittest.runner import TextTestRunner
 
