@@ -2,13 +2,13 @@
 
 import unittest
 
-import rdd
-from rdd import requirement_refs
-from rdd import add_requirement
+from .rdd import RDDTestRunner
+from .rdd import requirement_refs
+from .rdd import add_requirement
 
-from clu import Length
-from clu import LengthUnit
-from clu import add_unit
+from .clu import Length
+from .clu import LengthUnit
+from .clu import add_unit
 
 add_requirement('01', 'Conversions must be reflexive.')
 add_requirement('02', 'Conversions must be symetric.')
@@ -79,4 +79,4 @@ class TestRequirements(unittest.TestCase):
         self.assertEqual(Length(14, 'in'), Length.from_string('1 ft 2 in'))
 
 if __name__ == '__main__':
-    unittest.main(testRunner=rdd.RDDTestRunner)
+    unittest.main(testRunner=RDDTestRunner)

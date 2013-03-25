@@ -3,6 +3,7 @@ __author__ = 'timp21337'
 
 import unittest
 import os
+from time import gmtime, strftime
 
 from functools import wraps  # use this to preserve function signatures and docstrings
 from collections import OrderedDict
@@ -59,16 +60,17 @@ class RDDTestRunner(TextTestRunner):
             os.makedirs(directory)
 
         out = open('%s/index.html' % directory, 'w')
-        out.write("<html>")
-        out.write("<body>")
-        out.write("<h1>Requirements Verification Matrix</h1>")
+        out.write("<html>\n")
+        out.write("<body>\n")
+        out.write("<h1>Requirements Verification Matrix</h1>\n")
+        out.write("<h2>%s</h2>\n" % strftime("%Y-%m-%d %H:%M:%S", gmtime()))
         for para in sorted(para_tests.keys()):
-            out.write("<h2>%s - %s</h2>" % (para, _REQUIREMENTS[para]))
-            out.write("<ul>")
+            out.write("<h3>%s - %s</h3>\n" % (para, _REQUIREMENTS[para]))
+            out.write("<ul>\n")
             for test in para_tests[para]:
-                out.write("<li>%s</li>" % test)
-            out.write("</ul>")
+                out.write("<li>%s</li>\n" % test)
+            out.write("</ul>\n")
         out.write("")
-        out.write("</body>")
-        out.write("</html>")
+        out.write("</body>\n")
+        out.write("</html>\n")
 
