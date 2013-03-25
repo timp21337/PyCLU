@@ -85,6 +85,7 @@ class Length(object):
                        / _LENGTH_UNITS[unit_symbol].metres), unit_symbol)
 
     def pprint(self):
+        """Print with full unit name"""
         string = "{:.3F}".format(self.real)
         string = string.strip('0')
         if string.startswith('.'):
