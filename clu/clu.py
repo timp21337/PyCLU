@@ -23,11 +23,12 @@ _LENGTH_UNITS = {
 
 
 def add_unit(unit):
-    """Add a unit to the known units"""
+    """Add a unit to the known units."""
     _LENGTH_UNITS[unit.symbol] = unit
 
 
 def get_unit(unit_symbol):
+    """Return known unit."""
     return _LENGTH_UNITS[unit_symbol]
 
 
