@@ -22,8 +22,10 @@ def requirement_refs(refs):
     http://stackoverflow.com/questions/306130/python-decorator-makes-function-forget-that-it-belongs-to-a-class
     """
     def logger(test):
+        """Log each test."""
         @wraps(test)
         def with_aggregation(*args, **kwargs):
+            """Aggregate its requirements."""
             RDDTestRunner.test_refs[args[0].__class__.__name__ + "." + test.__name__] = refs
             return test(*args, **kwargs)
         return with_aggregation
