@@ -46,6 +46,7 @@ class TestRequirements(unittest.TestCase):
 
     @requirementRefs(['03'])
     def test_transitive(self):
+        """If x = y and y = z then x = z"""
         pass
 
     @requirementRefs(['04'])
@@ -73,8 +74,8 @@ class TestRequirements(unittest.TestCase):
     @requirementRefs(['04', '08'])
     def test_fromString(self):
         add_unit(LengthUnit('ft', 'feet', 0.3048))
-        self.assertEqual(Length(12, 'in'), Length.fromString('1 ft'))
-        self.assertEqual(Length(14, 'in'), Length.fromString('1 ft 2 in'))
+        self.assertEqual(Length(12, 'in'), Length.from_string('1 ft'))
+        self.assertEqual(Length(14, 'in'), Length.from_string('1 ft 2 in'))
 
 if __name__ == '__main__':
     unittest.main(testRunner=rdd.RDDTestRunner)

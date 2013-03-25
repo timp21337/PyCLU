@@ -15,7 +15,7 @@ class LengthUnit(object):
     def __lt__(self, other):
         return self.metres < other.metres
 
-_lengthUnits = {
+_LENGTH_UNITS = {
     'in': LengthUnit('in', 'inches', 0.0254),
     'm': LengthUnit('m', 'metres', 1.0),
     'yd': LengthUnit('yd', 'yards', 0.9144)
@@ -24,7 +24,7 @@ _lengthUnits = {
 
 def add_unit(unit):
     """Add a unit to the known units"""
-    _lengthUnits[unit.symbol] = unit
+    _LENGTH_UNITS[unit.symbol] = unit
 
 
 class Length(object):
@@ -32,7 +32,7 @@ class Length(object):
 
     def __init__(self, real, unit_symbol):
         self.real = real
-        self.unit = _lengthUnits[unit_symbol]
+        self.unit = _LENGTH_UNITS[unit_symbol]
 
     def __add__(self, other):
         if  other.unit < self.unit:
@@ -57,12 +57,12 @@ class Length(object):
                 "Only objects of the same type can be compared for equality %s : %s" % (self, other))
 
     @classmethod
-    def fromString(cls, string):
+    def from_string(cls, string):
         string = string.strip()
         (real_s, _, tail) = string.partition(' ')
         (unitSymbol, _, tail) = tail.partition(' ')
         real = float(real_s)
-        unit = _lengthUnits[unitSymbol]
+        unit = _LENGTH_UNITS[unitSymbol]
         while tail != '':
             soFar = Length(real, unit.symbol)
             (real_s, _, tail) = tail.partition(' ')
@@ -73,6 +73,6 @@ class Length(object):
             unit = added.unit
         return Length(real, unit.symbol)
 
-    def to(self, unitSymbol):
+    def to(self, unit_symbol):
         return Length(((self.real * self.unit.metres)
-                       / _lengthUnits[unitSymbol].metres), unitSymbol)
+                       / _LENGTH_UNITS[unit_symbol].metres), unit_symbol)
