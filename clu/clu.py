@@ -1,5 +1,5 @@
-__author__ = "timp"
-__doc__ = """Length conversion utility"""
+"""Length conversion utility"""
+__author__ = "timp21337"
 
 
 class LengthUnit(object):
