@@ -85,6 +85,7 @@ class TestRequirements(unittest.TestCase):
 
         self.assertEqual(Length(0.0833333333333, 'ft'), Length.from_string('1 in'),
                          Length.from_string('1 in').to('ft').real)
+        self.assertEqual('0.083 in', Length.from_string('1 in').to('ft'))
 
     def test_compare_with_differing_type(self):
         try:
