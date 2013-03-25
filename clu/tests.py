@@ -19,14 +19,13 @@ requirements = {
 
 
 
-testParas = {}
 
-def requirementParas(paras):
+def requirementRefs(refs):
     """See http://stackoverflow.com/questions/306130/python-decorator-makes-function-forget-that-it-belongs-to-a-class"""
     def logger(test):
         @wraps(test)
         def with_aggregation(*args, **kwargs):
-            testParas[args[0].__class__.__name__ + "." + test.__name__] = paras
+            RDDTestRunner.test_refs[args[0].__class__.__name__ + "." + test.__name__] = refs
             return test(*args, **kwargs)
         return with_aggregation
     return logger
@@ -36,6 +35,8 @@ class RDDTestRunner(TextTestRunner):
     """
     A test runner to aggregate requirements paragraphs.
     """
+    test_refs = {}
+
     def run(self, test):
         result = TextTestRunner.run(self, test)
         if isinstance(test, unittest.suite.TestSuite):
@@ -45,21 +46,25 @@ class RDDTestRunner(TextTestRunner):
     def print_matrix(self):
         paraTests = OrderedDict()
         reqParaCount = {}
-        for test in testParas.keys():
-            for para in testParas[test]:
+        for test in self.test_refs.keys():
+            for para in self.test_refs[test]:
                 if para in paraTests:
                     paraTests[para].append(test)
                 else:
                     paraTests[para] = [test]
-        print("")
-        print("<h1>Requirements Verification Matrix</h1>")
+        out = open('requirements_verification_matrix.html', 'w')
+        out.write("<html>")
+        out.write("<body>")
+        out.write("<h1>Requirements Verification Matrix</h1>")
         for p in sorted(paraTests.keys()):
-            print("<h2>%s - %s</h2>" % (p, requirements[p]))
-            print "<ul>"
+            out.write("<h2>%s - %s</h2>" % (p, requirements[p]))
+            out.write("<ul>")
             for t in paraTests[p]:
-                print("<li>%s</li>" % t)
-            print "</ul>"
-        print("")
+                out.write("<li>%s</li>" % t)
+            out.write("</ul>")
+        out.write("")
+        out.write("</body>")
+        out.write("</html>")
 
 
 class TestRequirements(unittest.TestCase):
@@ -67,16 +72,16 @@ class TestRequirements(unittest.TestCase):
     def setUp(self):
         pass
 
-    @requirementParas(['06'])
+    @requirementRefs(['06'])
     def test_example(self):
         self.assertEqual(str(Length(6, 'm').to('yd')), '6.562 yd')
         self.assertEqual(str(Length(2.5, 'yd').to('in')), '90 in')
 
-    @requirementParas(['01'])
+    @requirementRefs(['01'])
     def test_reflexive(self):
         self.assertEqual(Length(1.1, 'in'),Length(1.1, 'in'))
 
-    @requirementParas(['02'])
+    @requirementRefs(['02'])
     def test_symetric(self):
         self.assertEqual(Length(1.1, 'yd').to('m'),
                          Length(1.00584 , 'm'))
@@ -87,15 +92,15 @@ class TestRequirements(unittest.TestCase):
                          Length(1.1, 'yd').to('m').to('yd'))
 
 
-    @requirementParas(['03'])
+    @requirementRefs(['03'])
     def test_transitive(self):
         pass
 
-    @requirementParas(['04'])
+    @requirementRefs(['04'])
     def test_concatenable(self):
         pass
 
-    @requirementParas(['05'])
+    @requirementRefs(['05'])
     def test_convert_between_all_units(self):
         self.assertEquals(str(Length(1.1, 'yd').to('in')), "39.6 in")
         self.assertEquals(str(Length(1.1, 'yd').to('m')), "1.006 m")
@@ -104,16 +109,16 @@ class TestRequirements(unittest.TestCase):
         self.assertEquals(str(Length(110, 'in').to('yd')), "3.056 yd")
         self.assertEquals(str(Length(110, 'in').to('m')), "2.794 m")
 
-    @requirementParas(['06'])
+    @requirementRefs(['06'])
     def test_rounding(self):
         self.assertEqual(Length(36, 'in'), Length(1, 'yd'))
 
-    @requirementParas(['07'])
+    @requirementRefs(['07'])
     def test_add_feet(self):
         add_unit(LengthUnit('ft', 'feet', 0.3048))
         self.assertEqual(Length(12, 'in'), Length(1, 'ft'))
 
-    @requirementParas(['04','08'])
+    @requirementRefs(['04','08'])
     def test_fromString(self):
         add_unit(LengthUnit('ft', 'feet', 0.3048))
         self.assertEqual(Length(12, 'in'), Length.fromString('1 ft'))
