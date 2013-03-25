@@ -65,11 +65,11 @@ class Length(object):
         real = float(real_s)
         unit = _LENGTH_UNITS[unit_symbol]
         while tail != '':
-            soFar = Length(real, unit.symbol)
+            so_far = Length(real, unit.symbol)
             (real_s, _, tail) = tail.partition(' ')
             (unit_symbol, _, tail) = tail.partition(' ')
             next_length = Length(float(real_s), unit_symbol)
-            added = soFar + next_length
+            added = so_far + next_length
             real = added.real
             unit = added.unit
         return Length(real, unit.symbol)
