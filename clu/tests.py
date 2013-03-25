@@ -49,6 +49,8 @@ class TestRequirements(unittest.TestCase):
         """If x = y and y = z then x = z"""
         self.assertEqual(Length(1.1, 'yd').to('m').to('in'),
                          Length(39.6, 'in'))
+        self.assertEqual(Length(39.6, 'in').to('m').to('yd'),
+                         Length(1.1, 'yd'))
 
     @requirement_refs(['04'])
     def test_concatenable(self):
