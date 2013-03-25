@@ -8,16 +8,19 @@ from functools import wraps  # use this to preserve function signatures and docs
 from collections import OrderedDict
 from unittest.runner import TextTestRunner
 
-_requirements = {}
+_REQUIREMENTS = {}
 
 
 def add_requirement(ref, desc):
     """Add a requirement"""
-    _requirements[ref] = desc
+    _REQUIREMENTS[ref] = desc
 
 
 def requirementRefs(refs):
-    """See http://stackoverflow.com/questions/306130/python-decorator-makes-function-forget-that-it-belongs-to-a-class"""
+    """
+    See
+    http://stackoverflow.com/questions/306130/python-decorator-makes-function-forget-that-it-belongs-to-a-class
+    """
     def logger(test):
         @wraps(test)
         def with_aggregation(*args, **kwargs):
@@ -41,13 +44,13 @@ class RDDTestRunner(TextTestRunner):
         return result
 
     def print_matrix(self):
-        paraTests = OrderedDict()
+        para_tests = OrderedDict()
         for test in self.test_refs.keys():
             for para in self.test_refs[test]:
-                if para in paraTests:
-                    paraTests[para].append(test)
+                if para in para_tests:
+                    para_tests[para].append(test)
                 else:
-                    paraTests[para] = [test]
+                    para_tests[para] = [test]
         directory = 'Requirements_Verification_Matrix'
         if not os.path.exists(directory):
             os.makedirs(directory)
@@ -56,11 +59,11 @@ class RDDTestRunner(TextTestRunner):
         out.write("<html>")
         out.write("<body>")
         out.write("<h1>Requirements Verification Matrix</h1>")
-        for p in sorted(paraTests.keys()):
-            out.write("<h2>%s - %s</h2>" % (p, _requirements[p]))
+        for para in sorted(para_tests.keys()):
+            out.write("<h2>%s - %s</h2>" % (para, _REQUIREMENTS[para]))
             out.write("<ul>")
-            for t in paraTests[p]:
-                out.write("<li>%s</li>" % t)
+            for test in para_tests[para]:
+                out.write("<li>%s</li>" % test)
             out.write("</ul>")
         out.write("")
         out.write("</body>")
