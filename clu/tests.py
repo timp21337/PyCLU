@@ -35,8 +35,8 @@ class TestRequirements(unittest.TestCase):
 
     @requirement_refs(['06'])
     def test_example(self):
-        self.assertEqual(str(Length(6, 'm').to('yd')), '6.562 yd')
-        self.assertEqual(str(Length(2.5, 'yd').to('in')), '90 in')
+        self.assertEqual(str(Length(6, 'm').to_unit('yd')), '6.562 yd')
+        self.assertEqual(str(Length(2.5, 'yd').to_unit('in')), '90 in')
 
     @requirement_refs(['01'])
     def test_reflexive(self):
@@ -44,21 +44,21 @@ class TestRequirements(unittest.TestCase):
 
     @requirement_refs(['02'])
     def test_symetric(self):
-        self.assertEqual(Length(1.1, 'yd').to('m'),
+        self.assertEqual(Length(1.1, 'yd').to_unit('m'),
                          Length(1.00584, 'm'))
-        self.assertEqual(Length(1.00584, 'm').to('yd'),
+        self.assertEqual(Length(1.00584, 'm').to_unit('yd'),
                          Length(1.1, 'yd'))
 
         self.assertEqual(Length(1.1, 'yd'),
-                         Length(1.1, 'yd').to('m').to('yd'))
+                         Length(1.1, 'yd').to_unit('m').to_unit('yd'))
 
 
     @requirement_refs(['03'])
     def test_transitive(self):
         """If x = y and y = z then x = z"""
-        self.assertEqual(Length(1.1, 'yd').to('m').to('in'),
+        self.assertEqual(Length(1.1, 'yd').to_unit('m').to_unit('in'),
                          Length(39.6, 'in'))
-        self.assertEqual(Length(39.6, 'in').to('m').to('yd'),
+        self.assertEqual(Length(39.6, 'in').to_unit('m').to_unit('yd'),
                          Length(1.1, 'yd'))
 
     @requirement_refs(['04'])
@@ -69,12 +69,12 @@ class TestRequirements(unittest.TestCase):
 
     @requirement_refs(['05'])
     def test_convert_between_all_units(self):
-        self.assertEquals(str(Length(1.1, 'yd').to('in')), "39.6 in")
-        self.assertEquals(str(Length(1.1, 'yd').to('m')), "1.006 m")
-        self.assertEquals(str(Length(1.1, 'm').to('yd')), "1.203 yd")
-        self.assertEquals(str(Length(1.1, 'm').to('in')), "43.307 in")
-        self.assertEquals(str(Length(110, 'in').to('yd')), "3.056 yd")
-        self.assertEquals(str(Length(110, 'in').to('m')), "2.794 m")
+        self.assertEquals(str(Length(1.1, 'yd').to_unit('in')), "39.6 in")
+        self.assertEquals(str(Length(1.1, 'yd').to_unit('m')), "1.006 m")
+        self.assertEquals(str(Length(1.1, 'm').to_unit('yd')), "1.203 yd")
+        self.assertEquals(str(Length(1.1, 'm').to_unit('in')), "43.307 in")
+        self.assertEquals(str(Length(110, 'in').to_unit('yd')), "3.056 yd")
+        self.assertEquals(str(Length(110, 'in').to_unit('m')), "2.794 m")
 
     @requirement_refs(['06'])
     def test_rounding(self):
@@ -92,8 +92,8 @@ class TestRequirements(unittest.TestCase):
         self.assertEqual(Length(14, 'in'), Length.from_string('1 ft 2 in'))
 
         self.assertEqual(Length(0.0833333333333, 'ft'), Length.from_string('1 in'),
-                         Length.from_string('1 in').to('ft').real)
-        self.assertEqual('0.083 ft', str(Length.from_string('1 in').to('ft')))
+                         Length.from_string('1 in').to_unit('ft').real)
+        self.assertEqual('0.083 ft', str(Length.from_string('1 in').to_unit('ft')))
 
     @requirement_refs(['09'])
     def test_compare_with_differing_type(self):
@@ -107,7 +107,7 @@ class TestRequirements(unittest.TestCase):
     @requirement_refs(['10'])
     def test_pretty_print(self):
         add_unit(LengthUnit('ft', 'feet', 0.3048))
-        self.assertEqual('0.083 feet', Length.from_string('1 in').to('ft').pprint())
+        self.assertEqual('0.083 feet', Length.from_string('1 in').to_unit('ft').pprint())
         self.assertEqual('3 yards', Length(3, 'yd').pprint())
 
 

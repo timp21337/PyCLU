@@ -41,18 +41,9 @@ class Length(object):
 
     def __add__(self, other):
         if  other.unit < self.unit:
-            return Length((self.to(other.unit.symbol).real + other.real), other.unit.symbol)
+            return Length((self.to_unit(other.unit.symbol).real + other.real), other.unit.symbol)
         else:
             raise StandardError("Subsequent units must be smaller")
-
-    def __str__(self):
-        string = "{:.3F}".format(self.real)
-        string = string.strip('0')
-        if string.startswith('.'):
-            string = '0' + string
-        if string.endswith('.'):
-            string = string.strip('.')
-        return "%s %s" % (string, self.unit.symbol)
 
     def __eq__(self, other):
         if isinstance(other, Length):
@@ -61,9 +52,26 @@ class Length(object):
             raise TypeError(
                 "Only objects of the same type can be compared for equality '%s' : '%s'" % (self, other))
 
+    def formatted_quantity(self):
+        """Number with added leading zero if less than one"""
+        string = "{:.3F}".format(self.real)
+        string = string.strip('0')
+        if string.startswith('.'):
+            string = '0' + string
+        if string.endswith('.'):
+            string = string.strip('.')
+        return string
+
+    def __str__(self):
+        return "%s %s" % (self.formatted_quantity(), self.unit.symbol)
+
+    def pprint(self):
+        """Print with full unit name"""
+        return "%s %s" % (self.formatted_quantity(), self.unit.name)
+
     @classmethod
     def from_string(cls, string):
-        """mint a Length usig for example '9 in'."""
+        """mint a Length using for example '9 in'."""
         string = string.strip()
         (real_s, _, tail) = string.partition(' ')
         (unit_symbol, _, tail) = tail.partition(' ')
@@ -79,17 +87,7 @@ class Length(object):
             unit = added.unit
         return Length(real, unit.symbol)
 
-    def to(self, unit_symbol):
+    def to_unit(self, unit_symbol):
         """Convert to given unit."""
         return Length(((self.real * self.unit.metres)
                        / _LENGTH_UNITS[unit_symbol].metres), unit_symbol)
-
-    def pprint(self):
-        """Print with full unit name"""
-        string = "{:.3F}".format(self.real)
-        string = string.strip('0')
-        if string.startswith('.'):
-            string = '0' + string
-        if string.endswith('.'):
-            string = string.strip('.')
-        return "%s %s" % (string, self.unit.name)
