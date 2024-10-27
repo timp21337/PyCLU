@@ -43,14 +43,19 @@ class Length(object):
         if  other.unit < self.unit:
             return Length((self.to_unit(other.unit.symbol).real + other.real), other.unit.symbol)
         else:
-            raise StandardError("Subsequent units must be smaller")
+            raise Exception("Subsequent units must be smaller")
 
     def __eq__(self, other):
         if isinstance(other, Length):
-            return str(self.real * self.unit.metres) == str(other.real * other.unit.metres)
+            print("In eq")
+            print (str(round((self.real * self.unit.metres),5)))
+            print ( str(round((other.real * other.unit.metres),5)))
+            print (str(round((self.real * self.unit.metres),5)) == str(round((other.real * other.unit.metres),5)))
+            return str(round((self.real * self.unit.metres),5)) == str(round((other.real * other.unit.metres),5))
         else:
             raise TypeError(
                 "Only objects of the same type can be compared for equality '%s' : '%s'" % (self, other))
+
 
     def formatted_quantity(self):
         """Number with added leading zero if less than one"""
@@ -63,6 +68,8 @@ class Length(object):
         return string
 
     def __str__(self):
+
+        print("In str")
         return "%s %s" % (self.formatted_quantity(), self.unit.symbol)
 
     def pprint(self):

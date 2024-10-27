@@ -9,14 +9,14 @@
 
 import unittest
 
-from .rdd import RDDTestRunner
-from .rdd import requirement_refs
-from .rdd import add_requirement
+from clu.rdd import RDDTestRunner
+from clu.rdd import requirement_refs
+from clu.rdd import add_requirement
 
-from .clu import Length
-from .clu import LengthUnit
-from .clu import get_unit
-from .clu import add_unit
+from clu.clu import Length
+from clu.clu import LengthUnit
+from clu.clu import get_unit
+from clu.clu import add_unit
 
 add_requirement('01', 'Conversions must be reflexive.')
 add_requirement('02', 'Conversions must be symetric.')
@@ -65,16 +65,16 @@ class TestRequirements(unittest.TestCase):
     def test_concatenable(self):
         add_unit(LengthUnit('ft', 'feet', 0.3048))
         self.assertEqual(Length(170, 'in'), Length.from_string('4 yd 2 ft 2 in'), Length.from_string('4 yd 2 ft 2 in'))
-        self.assertRaises(StandardError, Length.from_string, '2 in 4 ft')
+        self.assertRaises(Exception, Length.from_string, '2 in 4 ft')
 
     @requirement_refs(['05'])
     def test_convert_between_all_units(self):
-        self.assertEquals(str(Length(1.1, 'yd').to_unit('in')), "39.6 in")
-        self.assertEquals(str(Length(1.1, 'yd').to_unit('m')), "1.006 m")
-        self.assertEquals(str(Length(1.1, 'm').to_unit('yd')), "1.203 yd")
-        self.assertEquals(str(Length(1.1, 'm').to_unit('in')), "43.307 in")
-        self.assertEquals(str(Length(110, 'in').to_unit('yd')), "3.056 yd")
-        self.assertEquals(str(Length(110, 'in').to_unit('m')), "2.794 m")
+        self.assertEqual(str(Length(1.1, 'yd').to_unit('in')), "39.6 in")
+        self.assertEqual(str(Length(1.1, 'yd').to_unit('m')), "1.006 m")
+        self.assertEqual(str(Length(1.1, 'm').to_unit('yd')), "1.203 yd")
+        self.assertEqual(str(Length(1.1, 'm').to_unit('in')), "43.307 in")
+        self.assertEqual(str(Length(110, 'in').to_unit('yd')), "3.056 yd")
+        self.assertEqual(str(Length(110, 'in').to_unit('m')), "2.794 m")
 
     @requirement_refs(['06'])
     def test_rounding(self):
